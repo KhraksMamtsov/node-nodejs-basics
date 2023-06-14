@@ -1,17 +1,18 @@
 const parseArgs = () => {
   // Write your code here
   const [_execPath, _jsFile, ...args] = process.argv;
+  const KEY_PREFIX = "--";
 
   const { result: parsedArgv } = args.reduce(
     (acc, currentElement) => {
       const { key, result } = acc;
-      const isKey = key === undefined;
 
-      if (isKey) {
-        result[currentElement] = [];
+      if (currentElement.startsWith(KEY_PREFIX)) {
+        const newKey = currentElement.slice(KEY_PREFIX.length);
+        result[newKey] = [];
 
         return {
-          key: currentElement,
+          key: newKey,
           result,
         };
       } else {
@@ -32,6 +33,7 @@ const parseArgs = () => {
   const result = Object.entries(parsedArgv)
     .map(([key, values]) => `${key} is ${values.join(",")}`)
     .join(", ");
+  console.log(result);
 
   return result;
 };
